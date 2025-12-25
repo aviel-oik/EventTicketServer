@@ -10,5 +10,19 @@
   {
     "username": "deborah",
     "password": "-----"
+  },
+  {
+    "username": "sarah",
+    "password": "11111"
+  },
+  {
+    "username": "yossef",
+    "password": "22222",
+    "role": "user"
+  },
+  {
+    "username": "yael",
+    "password": "22222",
+    "role": "admin"
   }
 ]

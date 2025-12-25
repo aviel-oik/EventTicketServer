@@ -4,7 +4,9 @@ import { readJsonFile, writeJsonFile } from '../data/filesOperations.js';
 const router = Router();
 
 router.post('/', async (req, res) => {
-    const newUser = req.body;
+    let newUser = req.body;
+    if (!req.body.role)
+        newUser = { ...newUser, role: 'user' };
     const users = await readJsonFile('./data/users.json');
     const user = users.find(u => u.username === newUser.username);
     if (user)
