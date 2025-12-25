@@ -41,6 +41,23 @@ router.get('/:username/summary', async (req, res) => {
     res.status(200).json({ totalTicketsBought: totalTickets, events: events, averageTicketsPerEvent: avg });
 })
 
+router.put('/tickets/return', async (req, res) => {
+    if (!await checkUserExist(req.body.username, req.body.password))
+        return res.status(400).json({ message: 'User not exist or incorrect password' });
+    const receipts = await readJsonFile('./data/receipts.json');
+    const ticketIndex = receipts.findIndex(r => r.username === req.body.username && r.eventName.toLowerCase() === req.body.eventName.toLowerCase());
+    if (ticketIndex === -1)
+        return res.status(400).json({ message: 'tickets not found' });
+    const ticket = receipts[ticketIndex];
+    receipts.splice(ticketIndex, 1);
+    await writeJsonFile('./data/receipts.json', receipts);
+    const events = await readJsonFile('./data/events.json');
+    const eventIndex = events.findIndex(e => e.eventName.toLowerCase() === req.body.eventName.toLowerCase());
+    events[eventIndex].ticketsAvailable += ticket.ticketsBought;
+    await writeJsonFile('./data/events.json', events);
+    res.status(200).json({ message: 'Tickets returned successfully' });
+});
+
 
 
 

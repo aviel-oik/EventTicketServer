@@ -7,6 +7,10 @@ const router = Router();
 router.post('/', async (req, res) => {
     if (!checkUserExist(req.body.username, req.body.password))
         return res.status(400).json({ message: 'User not exist or incorrect password' });
+    const user = await readJsonFile('./data/users.json');
+    const foundUser = user.find(u => u.username === req.body.username);
+    if (foundUser.role !== 'admin')
+        return res.status(403).json({ message: 'You need to be admin to create event' });
     const events = await readJsonFile('./data/events.json');
     const newEvent = { eventName: req.body.eventName, ticketsAvailable: req.body.ticketsForSale, createdBy: req.body.username };
     const event = events.find(e => e.eventName.toLowerCase() === newEvent.eventName.toLowerCase());
