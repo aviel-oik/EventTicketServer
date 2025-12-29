@@ -58,22 +58,4 @@ router.put('/tickets/return', async (req, res) => {
     res.status(200).json({ message: 'Tickets returned successfully' });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export default router;
